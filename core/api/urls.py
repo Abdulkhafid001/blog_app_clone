@@ -1,5 +1,5 @@
 from django.urls import path
-from blog.views import ItemListCreateView
+from api.views import ItemListCreateView
 
 urlpatterns = [
     # path('', views.index, name='index'),
