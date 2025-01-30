@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -14,6 +14,7 @@ SECRET_KEY = 'django-insecure-2egn5huzl_0bhb0@9*8tn1vxvrieamtwh1nmt9ca+imr5=n$g&
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ["http://*.acorn.io", "https://*.acorn.io"]
 
 
 # Application definition
@@ -68,6 +69,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+   
 }
 
 
