@@ -11,8 +11,32 @@ const getBlogPostBtn = document
       })
       .then((data) => {
         console.log("Blog posts:", data);
-      })
-      .catch((error) => {
-        console.error("an error during fetch.");
+        const blogPostContainer = document.getElementById("blogPostContainer");
+        data.forEach(post => {
+          const postElement = document.createElement("div");
+          postElement.innerHTML = `
+            <h2>${post.title}</h2>
+            <p>${post.content}</p>
+            <p>${post.pub_date}</p>
+            <small>Author: ${post.author.name}</small>
+          `;
+        blogPostContainer.appendChild(postElement);
+        });
+       
+      }).catch((error) => {
+        console.error("error: " + error);
       });
   });
+
+function addBlogPostsToHtml(data) {
+  const blogPostContainer = document.getElementById("blogPostContainer");
+  data.forEach((post) => {
+    const postElement = document.createElement("div");
+    postElement.innerHTML = `
+        <h2>${post.title}</h2>
+        <p>${post.content}</p>
+        <small>Author: ${post.pub_date}</small>
+    `;
+    blogPostContainer.appendChild(postElement);
+  });
+}
