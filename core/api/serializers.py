@@ -11,4 +11,4 @@ class AuthorSerializer(serializers.ModelSerializer):
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogPost
-        fields = '__all__'
+        fields = ['title', 'content', 'author']
