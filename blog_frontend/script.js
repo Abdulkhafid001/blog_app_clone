@@ -59,13 +59,12 @@ document.getElementById("blogForm").addEventListener("submit", function (e) {
   };
 
   sendDataToApi(apiUrl2, blog);
-  // console.log(blog);
-  // document.getElementById("blogForm").reset();
+ 
   alert("Blog post created successfully!");
 });
 
-function sendDataToApi(url, data) {
-  fetch(url, {
+function sendDataToApi(apiUrl, data) {
+  fetch(apiUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -73,9 +72,17 @@ function sendDataToApi(url, data) {
     body: JSON.stringify(data),
   })
     .then((response) => {
-      console.log("API response:", response);
+      if (!response.ok) {
+        throw new Error("Network response not ok.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Blog post created:", data);
+      alert("Blog post created successfully!");
     })
     .catch((error) => {
-      console.error("error:", error);
+      console.error("error: " + error);
+      alert("Error creating blog post!");
     });
 }

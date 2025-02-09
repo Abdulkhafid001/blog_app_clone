@@ -8,6 +8,6 @@ urlpatterns = [
     path("api/authors/<int:pk>", AuthorRetrieveUpdateDestroy.as_view(), name="update"),
 
     # custom URL routes
-    path("blogposts/", blogpost_list, name=""),
+    path("blogposts/",  BlogPostCreateViewFrontend.as_view(), name="blog-post-create"),
     # path("blogposts/", blogpost_list, name=""),
 ]
