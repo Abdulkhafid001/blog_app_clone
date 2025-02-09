@@ -59,7 +59,7 @@ document.getElementById("blogForm").addEventListener("submit", function (e) {
   };
 
   sendDataToApi(apiUrl2, blog);
- 
+
   alert("Blog post created successfully!");
 });
 
@@ -79,10 +79,8 @@ function sendDataToApi(apiUrl, data) {
     })
     .then((data) => {
       console.log("Blog post created:", data);
-      alert("Blog post created successfully!");
     })
     .catch((error) => {
       console.error("error: " + error);
-      alert("Error creating blog post!");
     });
 }
