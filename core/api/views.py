@@ -20,12 +20,12 @@ class AuthorRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 
 class BlogPostListCreate(generics.ListCreateAPIView):
     queryset = BlogPost.objects.all()
-    serializer_class = BlogSerializer
+    serializer_class = BlogPostSerializer
 
 
 class BlogPostRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = BlogPost.objects.all()
-    serializer_class = BlogSerializer
+    serializer_class = BlogPostSerializer
     lookup_field = 'pk'
 
 
@@ -35,11 +35,11 @@ def blogpost_list(request):
 
     if request.method == 'GET':
         blogposts = BlogPost.objects.all()
-        serializer = BlogSerializer(blogposts, many=True)
+        serializer = BlogPostSerializer(blogposts, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = BlogSerializer(data=request.data)
+        serializer = BlogPostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
