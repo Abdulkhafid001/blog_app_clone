@@ -18,7 +18,7 @@ def default_imageurl():
 class BlogPost(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
-    post_image_url = models.TextField()
+    post_image_url = models.URLField()
     pub_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
         Author, on_delete=models.CASCADE, null=True, related_name='blog_posts', default=1)
