@@ -48,19 +48,19 @@ document.getElementById("blogForm").addEventListener("submit", function (e) {
   // formdata
   const title = document.getElementById("title").value;
   const content = document.getElementById("content").value;
+  const postImage = document.getElementById("postImageUrl").value;
   const pubDate = document.getElementById("pubDate").value;
   const author = document.getElementById("author").value;
 
   const blog = {
     title: title,
     content: content,
+    post_image: postImage,
     pub_date: pubDate,
     author: author,
   };
 
   sendDataToApi(apiUrl2, blog);
-
-  alert("Blog post created successfully!");
 });
 
 function sendDataToApi(apiUrl, data) {

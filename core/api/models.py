@@ -11,6 +11,10 @@ class Author(models.Model):
         return self.name
 
 
+def default_imageurl():
+    return "https://imgs.search.brave.com/XGdJ4-IfhuybNdfZgNJK7LWugrtpad9RemRulqyzjfI/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA5LzYzLzk3LzY3/LzM2MF9GXzk2Mzk3/NjcwNV9JV2ZEQWNY/M3VxNVJFUmVSYnhi/WU5aNXpxeTdjMVA3/Ni5qcGc"
+
+
 class BlogPost(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
