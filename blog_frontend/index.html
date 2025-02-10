@@ -4,24 +4,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Website</title>
+    <title>Blog Landing Page</title>
     <link rel="stylesheet" href="styles.css">
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
     <header>
-        <h1>My Blog</h1>
+        <h1>Blog Landing Page</h1>
     </header>
 
     <main>
-        <!-- Blog Posts Section -->
-        <section id="blog-posts">
-            <!-- Blog posts will be dynamically added here -->
-           
+        <section id="blogPosts" class="blog-posts">
+
         </section>
     </main>
-    <script src="script.js"></script>
+    <script>
+
+        window.onload = getPosts;
+        function getPosts() {
+            fetch('http://localhost:8000/blogposts')
+                .then(response => response.json())
+                .then(data => {
+                    const blogPosts = document.getElementById('blogPosts');
+                    data.forEach(post => {
+                        const postElement = document.createElement('article');
+                        postElement.classList.add('post');
+                        postElement.innerHTML = `
+                        <h2>${post.title}</h2>
+                        <img src="${post.post_image_url}" width=300 height=300 alt="${post.title}">
+                        <p class="post-content">${post.content}</p>
+                        <p class="meta">by ${post.author} on ${post.pub_date}</p>
+                        <div class="social-icons">
+                            <button id="likeBtn" class="update-page post-btn" data-postId="${post.id}" data-action="like">like</button>
+                            <button id="commentBtn" class="update-page post-btn" data-postId="${post.id}" data-action="comment">comment</button>
+                            <button id="shareBtn" class="update-page post-btn" data-postId="${post.id}" data-action="share">share</button>
+                        </div>
+                    `;
+                        blogPosts.appendChild(postElement);
+                    });
+                });
+        }
+
+        document.getElementById('blogPosts').addEventListener('click', function (event) {
+            const button = event.target;
+
+            // Check if the clicked element is a button with the class 'update-page'
+            if (button.classList.contains('update-page')) {
+                const postId = button.getAttribute('data-postId'); // Get the post ID
+                const action = button.getAttribute('data-action'); // Get the action (like, comment, share)
+
+                // Handle the action based on the button clicked
+                switch (action) {
+                    case 'like':
+                        handleLike(postId);
+                        break;
+                    case 'comment':
+                        handleComment(postId);
+                        break;
+                    case 'share':
+                        handleShare(postId);
+                        break;
+                    default:
+                        console.log('Unknown action');
+                }
+            }
+        });
+
+        function handleLike(postId) {
+            console.log('like post with ID:', postId);
+        }
+        function handleComment(postId) {
+            console.log('add comment post with ID:', postId);
+        }
+        function handleShare(postId) {
+            console.log('share post with ID:', postId);
+        }
+
+
+        //  const updateBtn = document.getElementsByClassName("update-page");
+
+        //for (let i = 0; i < updateBtn.length; i++) {
+        // updateBtn[i].addEventListener("click", function () {
+        //  var postId = this.dataset.postId;
+        // var action = this.dataset.action;
+        // console.log('postId:', postId, 'action:', action);
+        //  });
+        //  }
+
+
+    </script>
+    <script src="script.js" defer></script>
 </body>
 
 </html>
