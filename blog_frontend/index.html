@@ -47,7 +47,7 @@
                 });
         }
 
-        
+
 
         document.getElementById('blogPosts').addEventListener('click', function (event) {
             const button = event.target;
@@ -79,7 +79,7 @@
             fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Authorization': localStorage.getItem('token'), 
+                    'Authorization': localStorage.getItem('token'),
                 },
                 body: JSON.stringify(data)
             }).then(response => {
