@@ -9,5 +9,7 @@ urlpatterns = [
 
     # custom URL routes
     path("blogposts/",  BlogPostCreateViewFrontend.as_view(), name="blog-post-create"),
-    # path("blogposts/", blogpost_list, name=""),
+    path("blogposts/<int:post_id>/like", LikeBlogPostView.as_view(), name="like blogpost"),
+    path("blogposts/<int:post_id>/comment", CommentBlogPostView.as_view(), name="comment blogpost"),
+    path("blogposts/<int:post_id>/share", ShareBlogPostView.as_view(), name="like blogpost"),
 ]
