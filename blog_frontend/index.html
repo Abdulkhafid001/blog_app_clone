@@ -71,6 +71,23 @@
             }
         });
 
+        function sendDataToBackend(url, data, actionAfterRequest) {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    ContentType: 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                response.json();
+            }).then(data => {
+                actionAfterRequest();
+                console.log('data', data);
+            }).catch(error => {
+                console.log('error', error);
+            })
+        }
+
         function handleLike(postId) {
             console.log('like post with ID:', postId);
         }
