@@ -26,6 +26,7 @@
             fetch('http://localhost:8000/blogposts')
                 .then(response => response.json())
                 .then(data => {
+                    //console.log(data);
                     const blogPosts = document.getElementById('blogPosts');
                     data.forEach(post => {
                         const postElement = document.createElement('article');
@@ -34,17 +35,19 @@
                         <h2>${post.title}</h2>
                         <img src="${post.post_image_url}" width=300 height=300 alt="${post.title}">
                         <p class="post-content">${post.content}</p>
-                        <p class="meta">by ${post.user.username} on ${post.pub_date}</p>
+                        <p class="meta">by ${post.user} on ${post.pub_date}</p>
                         <div class="social-icons">
-                            <button id="likeBtn" class="update-page post-btn" data-postId="${post.id}" data-action="like">like</button>
-                            <button id="commentBtn" class="update-page post-btn" data-postId="${post.id}" data-action="comment">comment</button>
-                            <button id="shareBtn" class="update-page post-btn" data-postId="${post.id}" data-action="share">share</button>
+                            <button id="likeBtn" class="update-page post-btn" data-postId="${post.id}" data-action="like">like ${post.total_likes}</button>
+                            <button id="commentBtn" class="update-page post-btn" data-postId="${post.id}" data-action="comment">comment ${post.total_comments}</button>
+                            <button id="shareBtn" class="update-page post-btn" data-postId="${post.id}" data-action="share">share ${post.total_shares}</button>
                         </div>
                     `;
                         blogPosts.appendChild(postElement);
                     });
                 });
         }
+
+        
 
         document.getElementById('blogPosts').addEventListener('click', function (event) {
             const button = event.target;
@@ -57,13 +60,13 @@
                 // Handle the action based on the button clicked
                 switch (action) {
                     case 'like':
-                        handleLike(postId);
+                        likePost(postId, action);
                         break;
                     case 'comment':
-                        handleComment(postId);
+                        comment(postId);
                         break;
                     case 'share':
-                        handleShare(postId);
+                        share(postId);
                         break;
                     default:
                         console.log('Unknown action');
@@ -71,47 +74,47 @@
             }
         });
 
+
         function sendDataToBackend(url, data, actionAfterRequest) {
             fetch(url, {
                 method: 'POST',
                 headers: {
-                    ContentType: 'application/json'
+                    'Authorization': localStorage.getItem('token'), 
                 },
                 body: JSON.stringify(data)
             }).then(response => {
                 response.json();
             }).then(data => {
-                actionAfterRequest();
+                if (actionAfterRequest) {
+                    actionAfterRequest();
+                }
                 console.log('data', data);
             }).catch(error => {
                 console.log('error', error);
             })
         }
-
-        function handleLike(postId) {
-            console.log('like post with ID:', postId);
+        function doNothing() {
+            console.log('do nothing');
         }
-        function handleComment(postId) {
+
+        function likePost(postId, action) {
+            console.log(action, 'post with ID:', postId);
+            const url = `http://127.0.0.1:8000/blogposts/${postId}/like`;
+            sendDataToBackend(url, {}, doNothing);
+
+        }
+        function comment(postId, action) {
+            const url = `http://127.0.0.1:8000/blogposts/${postId}/comment`;
+
+            // sendDataToBackend()
             console.log('add comment post with ID:', postId);
         }
-        function handleShare(postId) {
+        function share(postId, action) {
             console.log('share post with ID:', postId);
         }
 
-
-        //  const updateBtn = document.getElementsByClassName("update-page");
-
-        //for (let i = 0; i < updateBtn.length; i++) {
-        // updateBtn[i].addEventListener("click", function () {
-        //  var postId = this.dataset.postId;
-        // var action = this.dataset.action;
-        // console.log('postId:', postId, 'action:', action);
-        //  });
-        //  }
-
-
     </script>
-    <script src="script.js" defer></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

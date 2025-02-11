@@ -78,16 +78,15 @@ class LikeBlogPostView(APIView):
     def post(self, request, post_id):
         try:
             post = BlogPost.objects.get(id=post_id)
-
+            user = request.user
             like, created = Like.objects.get_or_create(
-                user=request.user, blog_post=post)
+                user=user, blog_post=post)
 
             if not created:
                 like.likes += 1
                 like.save()
-
-            serializer = BlogPostSerializer(post)
-            return Response([{'message': 'post liked'}, serializer.data], status=status.HTTP_200_OK)
+            serializer = LikeSerializer(post)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except BlogPost.DoesNotExist:
             return Response({"error": "BlogPost not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -99,7 +98,7 @@ class CommentBlogPostView(APIView):
             comment = Comment.objects.create(
                 user=request.user, blog_post=post, content=request.data['content'])
             serializer = CommentSerializer(comment)
-            return Response([{'message': 'comment added'}, serializer.data], status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except BlogPost.DoesNotExist:
             return Response({"error": "BlogPost not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -116,7 +115,7 @@ class ShareBlogPostView(APIView):
                 share.share_counts += 1
                 share.save()
 
-            serializer = BlogPostSerializer(post)
-            return Response([{'message': 'post shared'}, serializer.data], status=status.HTTP_200_OK)
+            serializer = ShareSerializer(post)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except BlogPost.DoesNotExist:
             return Response({"error": "BlogPost not found"}, status=status.HTTP_404_NOT_FOUND)

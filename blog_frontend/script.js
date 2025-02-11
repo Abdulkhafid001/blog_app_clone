@@ -178,10 +178,4 @@
 // // Initial render
 // renderBlogPosts();
 
-document.addEventListener("DOMContentLoaded", function () {
-  alert("DOM is ready!");
-  let likeBtn = document.getElementById("likeBtn");
-  likeBtn.addEventListener("click", function () {
-    alert("You liked this post");
-  });
-});
+
