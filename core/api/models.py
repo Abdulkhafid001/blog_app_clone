@@ -21,7 +21,7 @@ class BlogPost(models.Model):
     post_image_url = models.URLField(null=True, blank=True)
     pub_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
-        Author, on_delete=models.CASCADE, null=True, related_name='blog_posts', default=1)
+        Author, on_delete=models.CASCADE, null=True, related_name='author', default=1)
 
     def __str__(self):
         return self.title
@@ -29,7 +29,7 @@ class BlogPost(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(
-        'auth.User', on_delete=models.CASCADE, null=True)
+        Author, on_delete=models.CASCADE, related_name='comment_author', null=True)
     blog_post = models.ForeignKey(
         BlogPost, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
@@ -41,7 +41,7 @@ class Comment(models.Model):
 
 class Like(models.Model):
     user = models.ForeignKey(
-        'auth.User', on_delete=models.CASCADE, null=True)
+        Author, on_delete=models.CASCADE, related_name='like_author', null=True)
     blog_post = models.ForeignKey(
         BlogPost, on_delete=models.CASCADE, related_name='likes')
     likes = models.IntegerField(default=0)
@@ -52,7 +52,8 @@ class Like(models.Model):
 
 
 class Share(models.Model):
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(
+        Author, on_delete=models.CASCADE, related_name='share_author', null=True)
     blog_post = models.ForeignKey(
         BlogPost, on_delete=models.CASCADE, related_name='shares')
     share_counts = models.IntegerField(default=0)

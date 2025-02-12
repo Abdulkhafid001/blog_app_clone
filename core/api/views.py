@@ -59,8 +59,6 @@ class BlogPostCreateViewFrontend(APIView):
         blogposts = BlogPost.objects.all()
         serializer = BlogPostSerializer(blogposts, many=True)
         return Response(serializer.data)
-    
-    
 
     # def put(self, request, pk):
     #     blogpost = BlogPost.objects.get(pk=pk)
@@ -80,7 +78,7 @@ class LikeBlogPostView(APIView):
     def post(self, request, post_id):
         try:
             post = BlogPost.objects.get(id=post_id)
-            user = request.user
+            user = post.author
             like, created = Like.objects.get_or_create(
                 user=user, blog_post=post)
 
@@ -97,8 +95,10 @@ class CommentBlogPostView(APIView):
     def post(self, request, post_id):
         try:
             post = BlogPost.objects.get(id=post_id)
+            print('content', request.data.get('content'))
+            print('\n' * 10)
             comment = Comment.objects.create(
-                user=request.user, blog_post=post, content=request.data['content'])
+                user=post.author, blog_post=post, content=request.data.get('content'))
             serializer = BlogPostSerializer(comment)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except BlogPost.DoesNotExist:

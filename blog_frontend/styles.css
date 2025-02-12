@@ -76,11 +76,27 @@ main {
     margin-top: 10px;
 }
 
-
+/* comments */
 .comments {
     padding: 1em;
 }
 
 .comments input {
     padding: 1em;
+}
+
+#comment-form-container {
+    /* background-color: red; */
+    /* border: 1px solid #000; */
+    margin: 1em;
+}
+
+#comment-form-container input {
+    width: 70%;
+    padding: 1em;
+}
+
+#comment-form-container button {
+    width: 30%;
+    /* display: inline-block; */
 }

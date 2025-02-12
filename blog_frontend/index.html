@@ -16,9 +16,8 @@
 
     <main>
         <section id="blogPosts" class="blog-posts">
-
         </section>
-    </main>
+    </main> 
     <script>
 
         window.onload = getPosts;
@@ -35,11 +34,18 @@
                         <h2>${post.title}</h2>
                         <img src="${post.post_image_url}" width=300 height=300 alt="${post.title}">
                         <p class="post-content">${post.content}</p>
-                        <p class="meta">by ${post.user} on ${post.pub_date}</p>
+                        <p class="meta">by <strong> ${post.author_name}</strong> on ${post.pub_date}</p>
                         <div class="social-icons">
                             <button id="likeBtn" class="update-page post-btn" data-postId="${post.id}" data-action="like">like ${post.total_likes}</button>
-                            <button id="commentBtn" class="update-page post-btn" data-postId="${post.id}" data-action="comment">comment ${post.total_comments}</button>
+                            
                             <button id="shareBtn" class="update-page post-btn" data-postId="${post.id}" data-action="share">share ${post.total_shares}</button>
+                        </div>
+                        <div id="comment-form-container">
+                            <h3>Add a Comment</h3>
+                            <form id="comment-form">
+                                <input id="comment-content" type='text' name="content" placeholder="Write your comment...">
+                                <button id="commentBtn" class="update-page post-btn" data-postId="${post.id}" data-action="comment">Comment</button>
+                            </form>
                         </div>
                     `;
                         const commentSection = document.createElement('div')
@@ -47,7 +53,7 @@
                         commentSection.innerHTML = "<h3>Comments:</h3>";
                         post.comments.forEach(comment => {
                             let commentDiv = document.createElement('div');
-                            commentDiv.innerHTML = `<p>${comment.content}</p> <p>${comment.pub_date}</p>`;
+                            commentDiv.innerHTML = `by <strong> ${comment.author_name}</strong> <p>${comment.content}</p> <p>${comment.pub_date}</p>`;
                             commentSection.appendChild(commentDiv);
                         });
                         postElement.appendChild(commentSection);
@@ -113,14 +119,14 @@
 
         }
         function comment(postId, action) {
-            const addCommentBtn = document.getElementById('addComment');
-            addCommentBtn.addEventListener('click', function () {
-                console.log('add comment for ', postId);
-            })
             const url = `http://127.0.0.1:8000/blogposts/${postId}/comment`;
-
-            // sendDataToBackend()
-            // console.log('add comment post with ID:', postId);
+            document.getElementById("comment-form").addEventListener("submit", function (e) {
+                e.preventDefault();
+            });
+            const commentContent = document.getElementById('comment-content').value;
+            const strCommentContent = String(commentContent);
+            sendDataToBackend(url, strCommentContent, doNothing)
+            console.log('add comment post with ID:', postId, 'comment content', commentContent);
         }
         function share(postId, action) {
             console.log('share post with ID:', postId);
