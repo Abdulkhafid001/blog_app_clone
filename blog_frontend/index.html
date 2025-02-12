@@ -17,7 +17,7 @@
     <main>
         <section id="blogPosts" class="blog-posts">
         </section>
-    </main> 
+    </main>
     <script>
 
         window.onload = getPosts;
@@ -94,6 +94,7 @@
             fetch(url, {
                 method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
                     'Authorization': localStorage.getItem('token'),
                 },
                 body: JSON.stringify(data)
@@ -124,9 +125,11 @@
                 e.preventDefault();
             });
             const commentContent = document.getElementById('comment-content').value;
-            const strCommentContent = String(commentContent);
-            sendDataToBackend(url, strCommentContent, doNothing)
-            console.log('add comment post with ID:', postId, 'comment content', commentContent);
+            const comment = {
+                content: commentContent
+            }
+            sendDataToBackend(url, comment, doNothing);
+            console.log('add comment post with ID: ', postId, 'comment content: ', comment.content);
         }
         function share(postId, action) {
             console.log('share post with ID:', postId);

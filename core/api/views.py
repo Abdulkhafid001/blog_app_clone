@@ -78,9 +78,8 @@ class LikeBlogPostView(APIView):
     def post(self, request, post_id):
         try:
             post = BlogPost.objects.get(id=post_id)
-            user = post.author
             like, created = Like.objects.get_or_create(
-                user=user, blog_post=post)
+                user=post.author, blog_post=post)
 
             if not created:
                 like.likes += 1
@@ -95,11 +94,9 @@ class CommentBlogPostView(APIView):
     def post(self, request, post_id):
         try:
             post = BlogPost.objects.get(id=post_id)
-            print('content', request.data.get('content'))
-            print('\n' * 10)
             comment = Comment.objects.create(
-                user=post.author, blog_post=post, content=request.data.get('content'))
-            serializer = BlogPostSerializer(comment)
+                user=post.author, blog_post=post, content=request.data['content'])
+            serializer = CommentSerializer(comment)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except BlogPost.DoesNotExist:
             return Response({"error": "BlogPost not found"}, status=status.HTTP_404_NOT_FOUND)
