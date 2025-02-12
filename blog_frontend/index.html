@@ -26,7 +26,7 @@
             fetch('http://localhost:8000/blogposts')
                 .then(response => response.json())
                 .then(data => {
-                    //console.log(data);
+                    console.log(data);
                     const blogPosts = document.getElementById('blogPosts');
                     data.forEach(post => {
                         const postElement = document.createElement('article');
@@ -42,6 +42,15 @@
                             <button id="shareBtn" class="update-page post-btn" data-postId="${post.id}" data-action="share">share ${post.total_shares}</button>
                         </div>
                     `;
+                        const commentSection = document.createElement('div')
+                        commentSection.classList.add('comments');
+                        commentSection.innerHTML = "<h3>Comments:</h3>";
+                        post.comments.forEach(comment => {
+                            let commentDiv = document.createElement('div');
+                            commentDiv.innerHTML = `<p>${comment.content}</p> <p>${comment.pub_date}</p>`;
+                            commentSection.appendChild(commentDiv);
+                        });
+                        postElement.appendChild(commentSection);
                         blogPosts.appendChild(postElement);
                     });
                 });
@@ -88,7 +97,7 @@
                 if (actionAfterRequest) {
                     actionAfterRequest();
                 }
-                console.log('data', data);
+                console.log('data:', data);
             }).catch(error => {
                 console.log('error', error);
             })
@@ -104,10 +113,14 @@
 
         }
         function comment(postId, action) {
+            const addCommentBtn = document.getElementById('addComment');
+            addCommentBtn.addEventListener('click', function () {
+                console.log('add comment for ', postId);
+            })
             const url = `http://127.0.0.1:8000/blogposts/${postId}/comment`;
 
             // sendDataToBackend()
-            console.log('add comment post with ID:', postId);
+            // console.log('add comment post with ID:', postId);
         }
         function share(postId, action) {
             console.log('share post with ID:', postId);

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
+
 body {
     font-family: "DM Sans", serif;
     margin: 0;
@@ -7,6 +8,15 @@ body {
     background-color: #f9f9f9;
     color: #333;
     line-height: 1.6;
+}
+
+/* utility styles */
+.d-none {
+    display: none;
+}
+
+.d-block {
+    display: block;
 }
 
 header {
@@ -64,4 +74,13 @@ main {
     text-decoration: none;
     display: inline-block;
     margin-top: 10px;
+}
+
+
+.comments {
+    padding: 1em;
+}
+
+.comments input {
+    padding: 1em;
 }

@@ -59,6 +59,8 @@ class BlogPostCreateViewFrontend(APIView):
         blogposts = BlogPost.objects.all()
         serializer = BlogPostSerializer(blogposts, many=True)
         return Response(serializer.data)
+    
+    
 
     # def put(self, request, pk):
     #     blogpost = BlogPost.objects.get(pk=pk)
