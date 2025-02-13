@@ -106,15 +106,14 @@ class ShareBlogPostView(APIView):
     def post(self, request, post_id):
         try:
             post = BlogPost.objects.get(id=post_id)
-
             share, created = Share.objects.get_or_create(
-                user=request.user, blog_post=post)
+                user=post.author, blog_post=post)
 
             if not created:
-                share.share_counts += 1
+                share.shares += 1
                 share.save()
 
-            serializer = BlogPostSerializer(post)
+            serializer = ShareSerializer(share)   
             return Response(serializer.data, status=status.HTTP_200_OK)
         except BlogPost.DoesNotExist:
             return Response({"error": "BlogPost not found"}, status=status.HTTP_404_NOT_FOUND)

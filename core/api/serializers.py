@@ -30,7 +30,8 @@ class LikeSerializer(serializers.ModelSerializer):
 class ShareSerializer(serializers.ModelSerializer):
     class Meta:
         model = Share
-        fields = '__all__'
+        # fields = '__all__'
+        fields = ['user', 'blog_post', 'shares', 'date_and_time']
 
 
 class BlogPostSerializer(serializers.ModelSerializer):
@@ -53,7 +54,8 @@ class BlogPostSerializer(serializers.ModelSerializer):
         return obj.comments.count()
 
     def get_total_shares(self, obj):
-        return obj.shares.count()
+        # return obj.shares.count()
+        return obj.shares.aggregate(total_shares=Sum('shares'))['total_shares'] or 0
 
     def get_author_name(self, obj):
         return obj.author.name

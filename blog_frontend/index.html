@@ -32,7 +32,7 @@
                         postElement.classList.add('post');
                         postElement.innerHTML = `
                         <h2>${post.title}</h2>
-                        <img src="${post.post_image_url}" width=300 height=300 alt="${post.title}">
+                        <img src="${post.post_image_url}" width=300 height=300 alt="${post.title}" loading="lazy">
                         <p class="post-content">${post.content}</p>
                         <p class="meta">by <strong> ${post.author_name}</strong> on ${post.pub_date}</p>
                         <div class="social-icons">
@@ -61,7 +61,7 @@
                     });
                 });
         }
-
+// work on image lazy loading
 
 
         document.getElementById('blogPosts').addEventListener('click', function (event) {
@@ -133,6 +133,8 @@
         }
         function share(postId, action) {
             console.log('share post with ID:', postId);
+            const url = `http://127.0.0.1:8000/blogposts/${postId}/share`;
+            sendDataToBackend(url, {}, doNothing);
         }
 
     </script>

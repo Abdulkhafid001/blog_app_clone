@@ -48,7 +48,7 @@ class Like(models.Model):
     date_and_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.username
+        return self.user.name
 
 
 class Share(models.Model):
@@ -56,8 +56,8 @@ class Share(models.Model):
         Author, on_delete=models.CASCADE, related_name='share_author', null=True)
     blog_post = models.ForeignKey(
         BlogPost, on_delete=models.CASCADE, related_name='shares')
-    share_counts = models.IntegerField(default=0)
+    shares = models.IntegerField(default=0)
     date_and_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.username
+        return self.user.name
