@@ -9,6 +9,11 @@
         box-sizing: border-box
     }
 
+    form {
+        width: 50%;
+        margin: auto;
+    }
+
     /* Full-width input fields */
     input[type=text],
     input[type=password] {
@@ -84,24 +89,26 @@
 
 <body>
 
-    <form action="" style="border:1px solid #ccc">
+    <form action="" id="signupForm" style="border:1px solid #ccc" autocomplete="on">
         <div class="container">
             <h1>Sign Up</h1>
             <p>Please fill in this form to create an account.</p>
             <hr>
+            <label for="userName">User Name</label>
+            <input type="text" name="username" placeholder="Enter Username" id="userName" autocomplete="on">
 
-            <label for="email"><b>Email</b></label>
-            <input type="text" placeholder="Enter Email" name="email" required>
+            <label for="userMail"><b>Email</b></label>
+            <input type="text" placeholder="Enter Email" name="email" id="userMail" autocomplete="on">
 
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" required>
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" id="password">
 
-            <label for="psw-repeat"><b>Repeat Password</b></label>
+            <!-- <label for="psw-repeat"><b>Repeat Password</b></label>
             <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
 
             <label>
                 <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
-            </label>
+            </label> -->
 
             <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
 
@@ -111,6 +118,46 @@
             </div>
         </div>
     </form>
+
+    <script>
+        const url = 'http://127.0.0.1:8000/blogposts/signup';
+        function sendDataToBackend(url, data, action) {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                response.json();
+            }).then(data => {
+                console.log('data', data);
+            }).catch(error => {
+                console.log('error: ', error)
+            })
+        }
+
+        function signUp() {
+            let userName = document.getElementById('userName').value;
+            let userEmail = document.getElementById('userMail').value;
+            let userPassword = document.getElementById('password').value;
+
+            const userDetails = {
+                'userName': userName,
+                'userEmail': userEmail,
+                'userPassword': userPassword,
+            }
+
+            sendDataToBackend(url, userDetails, {});
+            //console.log(userDetails);
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            signUp();
+        })
+    </script>
 
 </body>
 

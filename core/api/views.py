@@ -113,7 +113,16 @@ class ShareBlogPostView(APIView):
                 share.shares += 1
                 share.save()
 
-            serializer = ShareSerializer(share)   
+            serializer = ShareSerializer(share)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except BlogPost.DoesNotExist:
             return Response({"error": "BlogPost not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+def sign_up(request):
+    if request.method == 'POST':
+        user_name = request.POST["userName"]
+        user_mail = request.POST["userMail"]
+        user_password = request.POST["password"]
+        print(user_name)
+        return Response({'message': 'signed up succesfully'})
