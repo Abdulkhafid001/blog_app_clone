@@ -125,8 +125,8 @@
             fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem('token')
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'Authorization': localStorage.getItem('token'),
                 },
                 body: JSON.stringify(data)
             }).then(response => {

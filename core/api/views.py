@@ -119,10 +119,12 @@ class ShareBlogPostView(APIView):
             return Response({"error": "BlogPost not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
+@csrf_exempt
 def sign_up(request):
     if request.method == 'POST':
         user_name = request.POST["userName"]
         user_mail = request.POST["userMail"]
         user_password = request.POST["password"]
         print(user_name)
-        return Response({'message': 'signed up succesfully'})
+        # return Response({'message': 'signed up succesfully'})
+    return HttpResponse('login here') 

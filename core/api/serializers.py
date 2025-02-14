@@ -7,7 +7,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         # fields = '__all__'
-        fields = [''] 
+        fields = ['user', 'name', 'email'] 
 
 
 class CommentSerializer(serializers.ModelSerializer):
