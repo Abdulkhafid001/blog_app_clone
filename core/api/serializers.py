@@ -6,7 +6,8 @@ from .models import *
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = '__all__'
+        # fields = '__all__'
+        fields = [''] 
 
 
 class CommentSerializer(serializers.ModelSerializer):
