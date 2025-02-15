@@ -1,9 +1,10 @@
-from django.http import HttpResponse
+import json
+from django.http import HttpResponse, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.shortcuts import render
 from rest_framework import generics
 from .models import *
 from .serializers import *
@@ -122,9 +123,15 @@ class ShareBlogPostView(APIView):
 @csrf_exempt
 def sign_up(request):
     if request.method == 'POST':
-        user_name = request.POST["userName"]
-        user_mail = request.POST["userMail"]
-        user_password = request.POST["password"]
-        print(user_name)
-        # return Response({'message': 'signed up succesfully'})
-    return HttpResponse('login here') 
+        data = json.loads(request.body)
+        user_name = data.get('userName')
+        user_mail = data.get('userEmail')
+        password = data.get('userPassword')
+
+        try:
+            user = User.objects.create_user(
+                username=user_name, email=user_mail, password=password)
+            user.save()
+        except:
+            pass
+    return JsonResponse({'message': 'signed up succesfully'})

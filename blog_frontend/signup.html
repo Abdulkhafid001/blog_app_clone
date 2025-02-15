@@ -120,6 +120,7 @@
     </form>
 
     <script>
+
         const url = 'http://127.0.0.1:8000/blogposts/signup';
         function sendDataToBackend(url, data, action) {
             fetch(url, {
@@ -127,6 +128,7 @@
                 headers: {
                     'Content-Type': 'application/json; charset=UTF-8',
                     'Authorization': localStorage.getItem('token'),
+                    "X-CSRFToken": localStorage.getItem('csrfToken')
                 },
                 body: JSON.stringify(data)
             }).then(response => {
@@ -142,21 +144,20 @@
             let userName = document.getElementById('userName').value;
             let userEmail = document.getElementById('userMail').value;
             let userPassword = document.getElementById('password').value;
-
             const userDetails = {
                 'userName': userName,
                 'userEmail': userEmail,
                 'userPassword': userPassword,
             }
-
             sendDataToBackend(url, userDetails, {});
-            //console.log(userDetails);
         }
 
         document.getElementById('signupForm').addEventListener('submit', function (e) {
             e.preventDefault();
             signUp();
         })
+
+
     </script>
 
 </body>
