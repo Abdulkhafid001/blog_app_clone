@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Author(models.Model):
     user = models.OneToOneField(
         'auth.User', on_delete=models.CASCADE, null=True)
@@ -61,3 +62,18 @@ class Share(models.Model):
 
     def __str__(self):
         return self.user.name
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey(
+        Author, on_delete=models.CASCADE, related_name='followers')
+    followed = models.ForeignKey(
+        Author, related_name='following', on_delete=models.CASCADE)
+    followers_count = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('follower', 'followed')
+
+    def __str__(self):
+        return f"{self.follower} followed {self.followed}"

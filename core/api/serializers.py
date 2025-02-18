@@ -3,6 +3,11 @@ from rest_framework import serializers
 from .models import *
 
 
+class FollowersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Follow
+        fields = ['user']
+
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author

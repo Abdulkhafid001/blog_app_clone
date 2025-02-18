@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
+from django.shortcuts import get_object_or_404
 from .models import *
 from .serializers import *
 
@@ -135,3 +136,12 @@ def sign_up(request):
         except:
             pass
     return JsonResponse({'message': 'signed up succesfully'})
+
+
+def follow_user(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('userName')
+        user_to_follow = get_object_or_404(Author, name=username)
+        Follow.objects.get_or_create(
+            follower=request.user, followed=user_to_follow)
