@@ -13,4 +13,5 @@ urlpatterns = [
     path("blogposts/<int:post_id>/comment", CommentBlogPostView.as_view(), name="comment blogpost"),
     path("blogposts/<int:post_id>/share", ShareBlogPostView.as_view(), name="like blogpost"),
     path("blogposts/signup", sign_up, name="sign up"),
+    path("blogposts/follow", follow_user, name="follow")
 ]

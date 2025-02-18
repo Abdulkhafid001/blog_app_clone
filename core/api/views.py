@@ -138,10 +138,15 @@ def sign_up(request):
     return JsonResponse({'message': 'signed up succesfully'})
 
 
+@csrf_exempt
 def follow_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         username = data.get('userName')
+        print(username)
+        print(request.user)
+        print('\n' * 10)
         user_to_follow = get_object_or_404(Author, name=username)
-        Follow.objects.get_or_create(
-            follower=request.user, followed=user_to_follow)
+        # Follow.objects.get_or_create(
+        #     follower=request.user, followed=user_to_follow)
+    return JsonResponse({'message': 'follow successful'})

@@ -19,7 +19,9 @@ def create_user_for_author(sender, instance, created, **kwargs):
         Author.objects.create(
             user=instance, name=instance.username, email=instance.email)
 
+
 @receiver(post_save, sender=Follow)
 def follow_notification(sender, instance, created, **kwargs):
     if created:
-        print
+        print(
+            f"{instance.follower.username} started following {instance.followed.username}")

@@ -18,7 +18,7 @@
                 <p>I'm a Chinese American</p>
                 <a href="#">123,000 followers</a>. <a href="#">143 following</a>
                 <div class="profile-action-btns">
-                    <button>following</button>
+                    <button id="followBtn">following</button>
                     <button>Notify me</button>
                     <button>Message</button>
                     <button>options</button>
@@ -29,18 +29,44 @@
             faith.” If your answer/comment isn’t blatantly progressive, I will assume you are a shitty Trump supporter
             and block you.
         </p>
-        div.sor
 
-        
+
     </div>
 
 
     <script>
-        //function doSomething(){
-        //    alert('welcome to profile')
-        //}
-        //window.onload = doSomething;
+        const followBtn = document.getElementById('followBtn');
 
+
+        const testData = {
+            'userName': 'Abdul'
+        }
+
+        function doNothing() {
+            console.log('do nothing');
+        }
+
+        function sendDataToBackend(url, data, action) {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'Authorization': localStorage.getItem('token'),
+                    "X-CSRFToken": localStorage.getItem('csrfToken')
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                response.json();
+            }).then(data => {
+                console.log('data', data);
+            }).catch(error => {
+                console.log('error: ', error)
+            })
+        }
+        const url = 'http://127.0.0.1:8000/blogposts/follow'
+        followBtn.addEventListener('click', function (e) {
+            sendDataToBackend(url, testData, doNothing);
+        });
     </script>
 </body>
 
