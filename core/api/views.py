@@ -1,7 +1,8 @@
 import json
 from django.http import HttpResponse, JsonResponse
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -161,4 +162,21 @@ def follow_user(request):
 def unfollow_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        username = data.get('userName')
+        user = Author.objects.get(id=1)
+        user_to_unfollow = get_object_or_404(Author, name=username)
+        Follow.objects.filter(
+            follower=user, followed=user_to_unfollow).delete()
     pass
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_user_info(request):
+    user = request.user
+    print(user)
+    return Response({
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+    })

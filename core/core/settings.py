@@ -22,6 +22,7 @@ CSRF_TRUSTED_ORIGINS = ["http://*", "https://*", "http://127.0.0.1:8000/"]
 INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
+    "rest_framework_simplejwt",
     'rest_framework.authtoken',
     'api',
     'django.contrib.admin',
@@ -119,6 +120,12 @@ STATIC_URL = 'static/'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+    ],
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }
 
