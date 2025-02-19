@@ -143,10 +143,20 @@ def follow_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         username = data.get('userName')
-        print(username)
-        print(request.user)
-        print('\n' * 10)
+        main_user = Author.objects.get(id=1)
         user_to_follow = get_object_or_404(Author, name=username)
-        # Follow.objects.get_or_create(
-        #     follower=request.user, followed=user_to_follow)
-    return JsonResponse({'message': 'follow successful'})
+        follow, created = Follow.objects.get_or_create(
+            follower=main_user, followed=user_to_follow)
+        if not created:
+            follow.followers_count += 1
+            follow.save()
+        FollowersSerializer(follow)
+        # return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return JsonResponse({'message': "follow successful"})
+
+
+@csrf_exempt
+def unfollow_user(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+    pass

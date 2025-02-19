@@ -6,7 +6,7 @@ from .models import *
 class FollowersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow
-        fields = ['user']
+        fields = ['follower', 'followed', 'followers_count', 'created_at']
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:

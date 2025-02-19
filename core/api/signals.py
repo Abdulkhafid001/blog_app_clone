@@ -24,4 +24,4 @@ def create_user_for_author(sender, instance, created, **kwargs):
 def follow_notification(sender, instance, created, **kwargs):
     if created:
         print(
-            f"{instance.follower.username} started following {instance.followed.username}")
+            f"{instance.follower.name} started following {instance.followed.name}")
