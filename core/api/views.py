@@ -147,9 +147,11 @@ def follow_user(request):
         user_to_follow = get_object_or_404(Author, name=username)
         follow, created = Follow.objects.get_or_create(
             follower=main_user, followed=user_to_follow)
-        if not created:
+        if created:
             follow.followers_count += 1
             follow.save()
+        elif not created:
+            pass
         FollowersSerializer(follow)
         # return Response(serializer.data, status=status.HTTP_201_CREATED)
     return JsonResponse({'message': "follow successful"})
