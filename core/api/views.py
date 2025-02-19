@@ -139,22 +139,22 @@ def sign_up(request):
     return JsonResponse({'message': 'signed up succesfully'})
 
 
-@csrf_exempt
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def follow_user(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        username = data.get('userName')
-        main_user = Author.objects.get(id=1)
-        user_to_follow = get_object_or_404(Author, name=username)
-        follow, created = Follow.objects.get_or_create(
-            follower=main_user, followed=user_to_follow)
-        if created:
-            follow.followers_count += 1
-            follow.save()
-        elif not created:
-            pass
-        FollowersSerializer(follow)
-        # return Response(serializer.data, status=status.HTTP_201_CREATED)
+    print(request.user)
+    data = json.loads(request.body)
+    username = data.get('userName')
+    main_user = Author.objects.get(id=1)
+    user_to_follow = get_object_or_404(Author, name=username)
+    follow, created = Follow.objects.get_or_create(
+        follower=main_user, followed=user_to_follow)
+    if created:
+        follow.followers_count += 1
+        follow.save()
+    elif not created:
+        pass
+    FollowersSerializer(follow)
     return JsonResponse({'message': "follow successful"})
 
 

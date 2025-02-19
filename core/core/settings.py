@@ -1,4 +1,5 @@
 from pathlib import Path
+from datetime import timedelta
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -119,6 +120,7 @@ STATIC_URL = 'static/'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         'rest_framework.authentication.TokenAuthentication',
     ],
     "DEFAULT_RENDERER_CLASSES": (
@@ -127,6 +129,16 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+}
+
+SIMPLE_JWT = {
+    # Increase access token lifespan
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    # Keep refresh token for a week
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,  # Get a new refresh token every time it's used
+    "BLACKLIST_AFTER_ROTATION": True,  # Invalidate old refresh tokens
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
 # Default primary key field type
