@@ -158,7 +158,6 @@ def follow_user(request):
     return JsonResponse({'message': "follow successful"})
 
 
-@csrf_exempt
 def unfollow_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
