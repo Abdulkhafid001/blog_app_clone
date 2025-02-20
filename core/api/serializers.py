@@ -50,9 +50,9 @@ class BlogPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BlogPost
-        # fields = '__all__'
         fields = ['id', 'title', 'content',
-                  'post_image_url', 'pub_date', 'author', 'author_name', 'total_likes', 'total_comments', 'total_shares', 'comments']
+                  'post_image_url', 'pub_date', 'author', 'author_name', 'total_likes',
+                  'total_comments', 'total_shares', 'comments']
 
     def get_total_likes(self, obj):
         return obj.likes.aggregate(total_likes=Sum('likes'))['total_likes'] or 0

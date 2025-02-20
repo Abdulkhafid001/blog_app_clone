@@ -12,7 +12,15 @@ from .models import *
 from .serializers import *
 
 
-class BlogPostCreateViewFrontend(APIView):
+class BlogPostList(generics.ListAPIView):
+    serializer_class = BlogPostSerializer
+    queryset = BlogPost.objects.all()
+
+
+class BlogPostCreateViewFrontend(generics.ListCreateAPIView):
+    serializer_class = BlogPostSerializer
+    queryset = BlogPost.objects.all()
+
     def post(self, request):
         serializer = BlogPostSerializer(data=request.data)
         if serializer.is_valid():
@@ -20,28 +28,23 @@ class BlogPostCreateViewFrontend(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request):
-        blogposts = BlogPost.objects.all()
-        serializer = BlogPostSerializer(blogposts, many=True)
-        return Response(serializer.data)
-
     def get(self, request, post_id):
         blogpost = BlogPost.objects.get(id=post_id)
         serializer = BlogPostSerializer(blogpost)
         return Response(serializer.data)
 
-    def put(self, request, pk):
-        blogpost = BlogPost.objects.get(pk=pk)
+    def put(self, request, post_id):
+        blogpost = BlogPost.objects.get(id=post_id)
         serializer = BlogPostSerializer(blogpost, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # def delete(self, request, pk):
-    #     blogpost = BlogPost.objects.get(pk=pk)
-    #     blogpost.delete()
-    #     return Response(status=status.HTTP_204_NO_CONTENT)
+    def delete(self, request, post_id):
+        blogpost = BlogPost.objects.get(id=post_id)
+        blogpost.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class LikeBlogPostView(APIView):
@@ -146,3 +149,15 @@ def get_user_info(request):
         "username": user.username,
         "email": user.email,
     })
+
+
+# get author detail page
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_author_posts(request, author_id):
+    author = Author.objects.get(id=author_id)
+    all_posts = BlogPost.objects.filter(author=author)
+    serializer = AuthorSerializer(author)
+    serializer2 = BlogPostSerializer(all_posts)
+    return Response(serializer.data)
+  
