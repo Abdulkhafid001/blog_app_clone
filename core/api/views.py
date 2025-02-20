@@ -143,7 +143,6 @@ def unfollow_user(request):
 @permission_classes([IsAuthenticated])
 def get_user_info(request):
     user = request.user
-    print(user)
     return Response({
         "id": user.id,
         "username": user.username,
@@ -158,6 +157,5 @@ def get_author_posts(request, author_id):
     author = Author.objects.get(id=author_id)
     all_posts = BlogPost.objects.filter(author=author)
     serializer = AuthorSerializer(author)
-    serializer2 = BlogPostSerializer(all_posts)
-    return Response(serializer.data)
-  
+    serializer2 = BlogPostSerializer(all_posts, many=True)
+    return Response(serializer2.data)

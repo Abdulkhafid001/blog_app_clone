@@ -22,48 +22,92 @@
     <script>
 
         window.onload = getPosts;
-        function getPosts() {
-            fetch('http://localhost:8000/blogposts')
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    const blogPosts = document.getElementById('blogPosts');
-                    data.forEach(post => {
-                        const postElement = document.createElement('article');
-                        postElement.classList.add('post');
-                        postElement.innerHTML = `
-                        <h2>${post.title}</h2>
-                        <img src="${post.post_image_url}" width=300 height=300 alt="${post.title}" loading="lazy">
-                        <p class="post-content">${post.content}</p>
-                        <p class="meta">by <a href="#" id="profileLink"  data-postId="${post.id}"><strong> ${post.author_name}</strong></a> on ${post.pub_date}</p>
-                        <div class="social-icons">
-                            <button id="likeBtn" class="update-page post-btn" data-postId="${post.id}" data-action="like">like ${post.total_likes}</button>
-                            
-                            <button id="shareBtn" class="update-page post-btn" data-postId="${post.id}" data-action="share">share ${post.total_shares}</button>
-                        </div>
-                        <div id="comment-form-container">
-                            <h3>Add a Comment</h3>
-                            <form id="comment-form">
-                                <input id="comment-content" type='text' name="content" placeholder="Write your comment...">
-                                <button id="commentBtn" class="update-page post-btn" data-postId="${post.id}" data-action="comment">Comment</button>
-                            </form>
-                        </div>
-                    `;
-                        const commentSection = document.createElement('div')
-                        commentSection.classList.add('comments');
-                        commentSection.innerHTML = "<h3>Comments:</h3>";
-                        post.comments.forEach(comment => {
-                            let commentDiv = document.createElement('div');
-                            commentDiv.innerHTML = `by <strong> ${comment.author_name}</strong> <p>${comment.content}</p> <p>${comment.pub_date}</p>`;
-                            commentSection.appendChild(commentDiv);
-                        });
-                        postElement.appendChild(commentSection);
-                        blogPosts.appendChild(postElement);
-                    });
-                });
-        }
-        // work on image lazy loading
+        const url = 'http://localhost:8000/api/blogposts'
+        async function refreshAccessToken() {
+            const refreshToken = localStorage.getItem("refresh_token");
 
+            if (!refreshToken) {
+                console.error("No refresh token found. User needs to log in.");
+                return;
+            }
+
+            const response = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refresh: refreshToken }),
+            });
+
+            if (!response.ok) {
+                console.error("Failed to refresh token. User needs to log in again.");
+                return;
+            }
+
+            const data = await response.json();
+            localStorage.setItem("access_token", data.access);
+            console.log("Access token refreshed!");
+        }
+
+        function getPosts() {
+            let token = localStorage.getItem("access_token");
+            fetch(url, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                }
+            }).then(response => {
+                if (response.status == 401) {
+                    console.log("Token expired, refreshing...");
+                    refreshAccessToken();
+                    token = localStorage.getItem("access_token");
+
+                    response = fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`,
+                        },
+                        body: JSON.stringify(data),
+                    });
+                }
+            }
+
+            ).then(data => {
+                console.log(data);
+                const blogPosts = document.getElementById('blogPosts');
+                data.forEach(post => {
+                    const postElement = document.createElement('article');
+                    postElement.classList.add('post');
+                    postElement.innerHTML = `
+                    <h2>${post.title}</h2>
+                    <img src="${post.post_image_url}" width=300 height=300 alt="${post.title}" loading="lazy">
+                    <p class="post-content">${post.content}</p>
+                    <p class="meta">by <a href="#" id="profileLink"  data-postId="${post.id}"><strong> ${post.author_name}</strong></a> on ${post.pub_date}</p>
+                    <div class="social-icons">
+                        <button id="likeBtn" class="update-page post-btn" data-postId="${post.id}" data-action="like">like ${post.total_likes}</button>
+                        
+                        <button id="shareBtn" class="update-page post-btn" data-postId="${post.id}" data-action="share">share ${post.total_shares}</button>
+                    </div>
+                    <div id="comment-form-container">
+                        <h3>Add a Comment</h3>
+                        <form id="comment-form">
+                            <input id="comment-content" type='text' name="content" placeholder="Write your comment...">
+                            <button id="commentBtn" class="update-page post-btn" data-postId="${post.id}" data-action="comment">Comment</button>
+                        </form>
+                    </div>
+                `;
+                    const commentSection = document.createElement('div')
+                    commentSection.classList.add('comments');
+                    commentSection.innerHTML = "<h3>Comments:</h3>";
+                    post.comments.forEach(comment => {
+                        let commentDiv = document.createElement('div');
+                        commentDiv.innerHTML = `by <strong> ${comment.author_name}</strong> <p>${comment.content}</p> <p>${comment.pub_date}</p>`;
+                        commentSection.appendChild(commentDiv);
+                    });
+                    postElement.appendChild(commentSection);
+                    blogPosts.appendChild(postElement);
+                });
+            })
+        }
 
         document.getElementById('blogPosts').addEventListener('click', function (event) {
             const button = event.target;
@@ -143,11 +187,7 @@
             console.log(postID);
         }
 
-        document.addEventListener("DOMContentLoaded", (event) => {
-            document.getElementById('profileLink').addEventListener('click', function (event) {
-                console.log('add data to localstorage now')
-            });
-        });
+
     </script>
     <script src="script.js"></script>
 </body>
