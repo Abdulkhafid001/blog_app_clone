@@ -12,44 +12,6 @@ from .models import *
 from .serializers import *
 
 
-class AuthorListCreate(generics.ListCreateAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-
-
-class AuthorRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-
-
-class BlogPostListCreate(generics.ListCreateAPIView):
-    queryset = BlogPost.objects.all()
-    serializer_class = BlogPostSerializer
-
-
-class BlogPostRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = BlogPost.objects.all()
-    serializer_class = BlogPostSerializer
-    lookup_field = 'pk'
-
-
-@api_view(['GET', 'POST'])
-def blogpost_list(request):
-    """ post a blog post to the API."""
-
-    if request.method == 'GET':
-        blogposts = BlogPost.objects.all()
-        serializer = BlogPostSerializer(blogposts, many=True)
-        return Response(serializer.data)
-
-    elif request.method == 'POST':
-        serializer = BlogPostSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class BlogPostCreateViewFrontend(APIView):
     def post(self, request):
         serializer = BlogPostSerializer(data=request.data)
@@ -63,13 +25,18 @@ class BlogPostCreateViewFrontend(APIView):
         serializer = BlogPostSerializer(blogposts, many=True)
         return Response(serializer.data)
 
-    # def put(self, request, pk):
-    #     blogpost = BlogPost.objects.get(pk=pk)
-    #     serializer = BlogPostSerializer(blogpost, data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, post_id):
+        blogpost = BlogPost.objects.get(id=post_id)
+        serializer = BlogPostSerializer(blogpost)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        blogpost = BlogPost.objects.get(pk=pk)
+        serializer = BlogPostSerializer(blogpost, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # def delete(self, request, pk):
     #     blogpost = BlogPost.objects.get(pk=pk)

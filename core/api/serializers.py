@@ -8,11 +8,12 @@ class FollowersSerializer(serializers.ModelSerializer):
         model = Follow
         fields = ['follower', 'followed', 'followers_count', 'created_at']
 
+
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         # fields = '__all__'
-        fields = ['user', 'name', 'email'] 
+        fields = ['user', 'name', 'email']
 
 
 class CommentSerializer(serializers.ModelSerializer):
