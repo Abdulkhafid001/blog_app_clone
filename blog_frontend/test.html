@@ -7,34 +7,35 @@
     <title>Test Page</title>
 </head>
 
-<body>
-    <script>
-        const login = async (username, password) => {
-            try {
-                const response = await fetch("http://127.0.0.1:8000/api/token/", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ username, password }),
-                });
+</body>
 
-                if (!response.ok) {
-                    throw new Error("Login failed");
-                }
+<script>
+    const login = async (username, password) => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/token/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ username, password }),
+            });
 
-                const data = await response.json();
-                localStorage.setItem("access_token", data.access);
-                localStorage.setItem("refresh_token", data.refresh);
-
-                console.log("Logged in successfully!");
-            } catch (error) {
-                console.error("Error:", error);
+            if (!response.ok) {
+                throw new Error("Login failed");
             }
-        };
-        login('bloguser', '12345678yb');
 
-    </script>
+            const data = await response.json();
+            localStorage.setItem("access_token", data.access);
+            localStorage.setItem("refresh_token", data.refresh);
+
+            console.log("Logged in successfully!");
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+    //login('bloguser', '12345678yb');
+
+</script>
 </body>
 
 </html>
