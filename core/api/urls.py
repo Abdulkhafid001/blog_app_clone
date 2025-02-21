@@ -6,7 +6,7 @@ urlpatterns = [
     path("api/blogposts/",  BlogPostList.as_view(), name="blog-post-create"),
     path("api/blogposts/<int:post_id>",  BlogPostCreateViewFrontend.as_view(), name="blog-post-create"),
 
-    path("api/author/<int:author_id>", get_author_posts, name="author posts"),
+    path("api/author/<int:author_id>/blogposts", get_author_posts, name="author posts"),
 
     path("api/blogposts/<int:post_id>/like", LikeBlogPostView.as_view(), name="like blogpost"),
     path("api/blogposts/<int:post_id>/comment", CommentBlogPostView.as_view(), name="comment blogpost"),

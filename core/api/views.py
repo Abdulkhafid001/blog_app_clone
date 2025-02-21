@@ -17,6 +17,7 @@ class BlogPostList(generics.ListAPIView):
     queryset = BlogPost.objects.all()
 
 
+@permission_classes([IsAuthenticated])
 class BlogPostCreateViewFrontend(generics.ListCreateAPIView):
     serializer_class = BlogPostSerializer
     queryset = BlogPost.objects.all()
