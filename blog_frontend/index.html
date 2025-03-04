@@ -25,33 +25,12 @@
     </section>
     <!-- blogposts -->
     <section id="blogPosts">
-        <div class="post-container">
-            <div class="post-header">
-                <img src="assets/blog-profile-picture.jpeg" alt="Profile Picture">
-                <div class="post-header-info">
-                    <span>Eugene Costov</span>
-                    <span>Software Developer · Updated 6y</span>
-                </div>
-            </div>
-            <div class="post-content">
-                <p>What should you never buy in life?</p>
-                <p>When I was 24 I bought a sports car (BMW M3) a few months after I got my first serious job. It was my
-                    dream car for the longest time. It cost me a toooooon of money in insurance, maintenance, repairs
-                    and gas. Even though it's VERY fun <a href="#">(more)</a></p>
-            </div>
-            <div class="post-footer">
-                <div>
-                    <button onclick="alert('hello')">Upvote · 55.5K</button>
-                    <span>784 Comments</span>
-                    <span>484 Shares</span>
-                </div>
-
-            </div>
+        <div class="post-container" id="blogpostContainer">
         </div>
     </section>
 
     <!-- comments -->
-    <div class="post-container">
+    <div class="">
         <div class="comment-section">
             <h3>Comments</h3>
             <div class="comment">
@@ -91,15 +70,9 @@
             </div>
         </div>
     </div>
-
-    <main>
-        <a href=""></a>
-        <section id="blogPosts" class="blog-posts">
-        </section>
-    </main>
     <script>
 
-        //window.onload = getPosts;
+        window.onload = getPosts;
         const url = 'http://localhost:8000/api/blogposts'
         async function refreshAccessToken() {
             const refreshToken = localStorage.getItem("refresh_token");
@@ -133,8 +106,37 @@
                     "Authorization": `Bearer ${token}`,
                 }
             }).then(response => response.json()).then(data => {
-                console.log(data);
-                const blogPosts = document.getElementById('blogPosts');
+                // console.log(data);
+                const blogPosts = document.getElementById('blogpostContainer');
+                data.forEach(post => {
+                    const postElement = document.createElement('div');
+                    //postElement.classList.add('mb-sm');
+                    postElement.innerHTML = `
+                    <div class="post">
+                <div class="post-header ">
+                    <img src="assets/blog-profile-picture.jpeg" alt="Profile Picture">
+                    <div class="post-header-info">
+                        <a href="/profile.html">${post.author_name}</a>
+                        <span>Software Developer · Updated 6y</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>${post.title}</p>
+                    <p>${post.content}</p>
+                </div>
+                <div class="post-footer">
+                    <div>
+                        <button onclick="alert('hello')"><i class="bi bi-arrow-up-square-fill"></i> Upvote ·
+                            ${post.total_likes}</button>
+                        <span>${post.total_comments} Comments</span>
+                        <span>${post.total_shares} Shares</span>
+                    </div>
+
+                </div>
+            </div>
+                    `;
+                    blogPosts.appendChild(postElement);
+                })
             });
         }
 
@@ -211,10 +213,6 @@
             sendDataToBackend(url, {}, doNothing);
         }
 
-        function getUserInfo() {
-            const postID = profileLink.getAttribute('data-postId');
-            console.log(postID);
-        }
 
 
     </script>

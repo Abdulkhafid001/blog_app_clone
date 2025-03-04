@@ -34,7 +34,9 @@ img {
 .p-sm {
     padding: 0.7em;
 }
-
+.mb-sm{
+    margin-top: 20px;
+}
 button {
     background-color: #0f0f0f;
     color: white;
@@ -181,14 +183,19 @@ main {
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #fff;
+    /* background-color: #fff; */
     border: 1px solid #ddd;
     border-radius: 4px;
+}
+
+.post{
+    margin: 20px 0;
 }
 
 .post-header {
     display: flex;
     align-items: center;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
@@ -233,6 +240,7 @@ main {
     display: flex;
     align-items: center;
     margin-top: 20px;
+    margin-bottom: 20px;
     font-size: 14px;
     color: #666;
 }
@@ -252,6 +260,7 @@ main {
     padding: 15px;
     border-radius: 10px;
     color: white;
+    display: none;
 }
 
 .comment {
