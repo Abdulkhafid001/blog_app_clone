@@ -2,4 +2,4 @@
 Cloning Qoura Q&A platform using Django Rest Framework.
 
 # app screenshots
-![Homepage] (blogfrontend/assets/qoura_clone image 1.png)
+![Homepage] (blog_frontend/assets/qoura_clone image 1.png)
