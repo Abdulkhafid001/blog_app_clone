@@ -132,7 +132,7 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     # Increase access token lifespan
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     # Keep refresh token for a week
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,  # Get a new refresh token every time it's used

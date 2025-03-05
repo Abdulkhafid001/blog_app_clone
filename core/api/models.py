@@ -42,14 +42,14 @@ class Comment(models.Model):
 
 class Like(models.Model):
     user = models.ForeignKey(
-        Author, on_delete=models.CASCADE, related_name='like_author', null=True)
+        User, on_delete=models.CASCADE, related_name='like_author', null=True)
     blog_post = models.ForeignKey(
         BlogPost, on_delete=models.CASCADE, related_name='likes')
     likes = models.IntegerField(default=0)
     date_and_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.name
+        return self.user.username
 
 
 class Share(models.Model):

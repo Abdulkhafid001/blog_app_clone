@@ -175,27 +175,28 @@
                     'Authorization': localStorage.getItem('token'),
                 },
                 body: JSON.stringify(data)
-            }).then(response => {
-                response.json();
-            }).then(data => {
-                if (actionAfterRequest) {
-                    actionAfterRequest();
-                }
-                console.log('data:', data);
-            }).catch(error => {
-                console.log('error', error);
-            })
+            }).then(response => response.json())
+                .then(data => {
+                    if (actionAfterRequest) {
+                        actionAfterRequest();
+                    }
+                    console.log('total_likes:', data.total_likes);
+                }).catch(error => {
+                    console.log('error', error);
+                })
         }
         function doNothing() {
             console.log('do nothing');
         }
 
+
+
         function likePost(postId, action) {
             console.log(action, 'post with ID:', postId);
-            const url = `http://127.0.0.1:8000/blogposts/${postId}/like`;
+            const url = `http://127.0.0.1:8000/api/blogposts/${postId}/like`;
             sendDataToBackend(url, 'POST', {}, doNothing);
-
         }
+
         function comment(postId, action) {
             const url = `http://127.0.0.1:8000/blogposts/${postId}/comment`;
             document.getElementById("comment-form").addEventListener("submit", function (e) {

@@ -50,27 +50,24 @@ class BlogPostCreateViewFrontend(generics.ListCreateAPIView):
 
 class LikeBlogPostView(APIView):
     def post(self, request, post_id):
-        print(request.user)
         try:
             post = BlogPost.objects.get(id=post_id)
             like, created = Like.objects.get_or_create(
                 user=request.user, blog_post=post)
-
-            if not created:
-                like.likes += 1
-                like.save()
+            like.likes += 1
+            like.save()
             serializer = BlogPostSerializer(post)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except BlogPost.DoesNotExist:
             return Response({"error": "BlogPost not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    def get(self, request):
-        user = request.user
-        return Response({
-            "id": user.id,
-            "username": user.username,
-            "email": user.email,
-        })
+    # def get(self, request):
+    #     user = request.user
+    #     return Response({
+    #         "id": user.id,
+    #         "username": user.username,
+    #         "email": user.email,
+    #     })
 
 
 class CommentBlogPostView(APIView):
