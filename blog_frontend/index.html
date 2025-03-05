@@ -126,7 +126,7 @@
                 </div>
                 <div class="post-footer">
                     <div>
-                        <button onclick="alert('hello')"><i class="bi bi-arrow-up-square-fill"></i> Upvote ·
+                        <button id="likeBtn" class="update-page" data-postId=${post.id} data-action="like"><i class="bi bi-arrow-up-square-fill"></i> Upvote ·
                             ${post.total_likes}</button>
                         <span>${post.total_comments} Comments</span>
                         <span>${post.total_shares} Shares</span>
@@ -152,6 +152,7 @@
                 switch (action) {
                     case 'like':
                         likePost(postId, action);
+                        //console.log('like post with ID:', postId);
                         break;
                     case 'comment':
                         comment(postId);
@@ -166,9 +167,9 @@
         });
 
 
-        function sendDataToBackend(url, data, actionAfterRequest) {
+        function sendDataToBackend(url, Reqmethod, data, actionAfterRequest) {
             fetch(url, {
-                method: 'POST',
+                method: Reqmethod,
                 headers: {
                     'Content-Type': 'application/json; charset=UTF-8',
                     'Authorization': localStorage.getItem('token'),
@@ -192,7 +193,7 @@
         function likePost(postId, action) {
             console.log(action, 'post with ID:', postId);
             const url = `http://127.0.0.1:8000/blogposts/${postId}/like`;
-            sendDataToBackend(url, {}, doNothing);
+            sendDataToBackend(url, 'POST', {}, doNothing);
 
         }
         function comment(postId, action) {
