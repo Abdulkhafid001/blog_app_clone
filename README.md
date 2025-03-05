@@ -1,2 +1,5 @@
 # blog_app_clone
-this is me leveling up my django skills by comparing my code to that of a senior software engineer
+Cloning Qoura Q&A platform using Django Rest Framework
+
+# app screenshots
+![Homepage](blogfrontend/assets/qoura_clone_image 1.png)
