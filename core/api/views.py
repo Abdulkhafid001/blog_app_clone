@@ -74,8 +74,16 @@ class CommentBlogPostView(APIView):
     def post(self, request, post_id):
         try:
             post = BlogPost.objects.get(id=post_id)
-            comment = Comment.objects.create(
-                user=post.author, blog_post=post, content=request.data['content'])
+
+            comment, created = Comment.objects.get_or_create(
+                user=request.user, blog_post=post, content=request.data['content']
+            )
+            if created:
+                pass
+            if not created:
+                pass
+            # comment = Comment.objects.create( 
+            #     user=request.user, blog_post=post, content=request.data['content'])
             serializer = CommentSerializer(comment)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except BlogPost.DoesNotExist:

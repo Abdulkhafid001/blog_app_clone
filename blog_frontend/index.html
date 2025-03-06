@@ -64,42 +64,71 @@
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
                 }
-            }).then(response => response.json()).then(data => {
-                // console.log(data);
-                const blogPosts = document.getElementById('blogpostContainer');
-                data.forEach(post => {
-                    const postElement = document.createElement('div');
-                    //postElement.classList.add('mb-sm');
-                    postElement.innerHTML = `
-                    <div class="post">
-                <div class="post-header ">
+            }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const blogPosts = document.getElementById('blogpostContainer');
+                    data.forEach(post => {
+                        const postElement = document.createElement('div');
+                        //postElement.classList.add('mb-sm');
+                        postElement.innerHTML = `
+                <div class="post">
+                    <div class="post-header ">
+                        <img src="assets/blog-profile-picture.jpeg" alt="Profile Picture">
+                        <div class="post-header-info">
+                            <a href="/profile.html">${post.author_name}</a>
+                            <span>Software Developer · Updated 6y</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>${post.title}</p>
+                        <p>${post.content}</p>
+                    </div>
+                    <div class="post-footer">
+                        <div>
+                            <button id="likeBtn" class="update-page" data-postId=${post.id} data-action="like"><i class="bi bi-arrow-up-square-fill"></i> Upvote ·
+                                ${post.total_likes}</button>
+                            <span>${post.total_comments} Comments</span>
+                            <span>${post.total_shares} Shares</span>
+                        </div>
+
+                    </div>
+                      <div class='comment-container' id="comment-${post.id}">
+                            <form action="">
+                                <input class="comment-input" id="commentInput" placeholder="add comment">
+                                <input type="submit" class="submit-comment-btn" value="Submit">
+                            </form>
+                            <p class="comments-header">Comments</p>
+                      </div>
+                </div>
+                `;
+            blogPosts.appendChild(postElement);
+
+            const commentsContainer = document.getElementById(`comment-${post.id}`);
+            post.comments.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.classList.add('comment');
+                commentElement.innerHTML = `
+                 <div class="comment-header">
                     <img src="assets/blog-profile-picture.jpeg" alt="Profile Picture">
-                    <div class="post-header-info">
-                        <a href="/profile.html">${post.author_name}</a>
-                        <span>Software Developer · Updated 6y</span>
+                    <div class="comment-header-info">
+                        <span>Alex Filsinger</span>
+                        <span>· 6y</span>
                     </div>
                 </div>
-                <div class="post-content">
-                    <p>${post.title}</p>
-                    <p>${post.content}</p>
+                <div class="comment-content">
+                    If that is the car in the picture, it’s a 325ci not an M3. No sense saying the car was something it
+                    isn’t.
                 </div>
-                <div class="post-footer">
-                    <div>
-                        <button id="likeBtn" class="update-page" data-postId=${post.id} data-action="like"><i class="bi bi-arrow-up-square-fill"></i> Upvote ·
-                            ${post.total_likes}</button>
-                        <span>${post.total_comments} Comments</span>
-                        <span>${post.total_shares} Shares</span>
-                    </div>
-
+                <div class="comment-footer">
+                    <span>185</span>
+                    <span>Reply</span>
                 </div>
-                <div class='d-none comment-container'>
-
-                </div>
-            </div>
-                    `;
-                    blogPosts.appendChild(postElement);
-                })
+                `;
+                commentsContainer.appendChild(commentElement);
             });
+            })
+        });
         }
 
         document.getElementById('blogPosts').addEventListener('click', function (event) {
