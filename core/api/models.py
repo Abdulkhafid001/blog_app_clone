@@ -54,7 +54,7 @@ class Like(models.Model):
 
 class Share(models.Model):
     user = models.ForeignKey(
-        Author, on_delete=models.CASCADE, related_name='share_author', null=True)
+        User, on_delete=models.CASCADE, related_name='share_author', null=True)
     blog_post = models.ForeignKey(
         BlogPost, on_delete=models.CASCADE, related_name='shares')
     shares = models.IntegerField(default=0)

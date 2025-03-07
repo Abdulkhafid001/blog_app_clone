@@ -96,16 +96,21 @@ class ShareBlogPostView(APIView):
         try:
             post = BlogPost.objects.get(id=post_id)
             share, created = Share.objects.get_or_create(
-                user=post.author, blog_post=post)
-
-            if not created:
-                share.shares += 1
-                share.save()
+                user=request.user, blog_post=post)
+            share.shares += 1
+            share.save()
 
             serializer = ShareSerializer(share)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except BlogPost.DoesNotExist:
             return Response({"error": "BlogPost not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    def get(self, request, post_id):
+        post = BlogPost.objects.get(id=post_id)
+        shares = post.shares.all()
+        serializer = ShareSerializer(shares, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 @csrf_exempt

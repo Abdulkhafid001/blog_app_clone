@@ -43,6 +43,7 @@ class ShareSerializer(serializers.ModelSerializer):
 
 class BlogPostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True)
+    shares = ShareSerializer(many=True)
     total_likes = serializers.SerializerMethodField()
     total_comments = serializers.SerializerMethodField()
     total_shares = serializers.SerializerMethodField()
@@ -52,7 +53,7 @@ class BlogPostSerializer(serializers.ModelSerializer):
         model = BlogPost
         fields = ['id', 'title', 'content',
                   'post_image_url', 'pub_date', 'author', 'author_name', 'total_likes',
-                  'total_comments', 'total_shares', 'comments']
+                  'total_comments', 'total_shares', 'comments', 'shares']
 
     def get_total_likes(self, obj):
         return obj.likes.aggregate(total_likes=Sum('likes'))['total_likes'] or 0

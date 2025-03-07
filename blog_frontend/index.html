@@ -189,9 +189,7 @@
 
 
         function comment(postId, action) {
-
             const url = `http://127.0.0.1:8000/api/blogposts/${postId}/comment`;
-
             document.getElementById(`commentForm-${postId}`).addEventListener("submit", function (e) {
                 e.preventDefault();
             });
@@ -199,9 +197,7 @@
             const comment = {
                 content: commentContent
             }
-
             sendDataToBackend(url, 'POST', comment, doNothing);
-
             //console.log('add comment post with ID: ', postId, 'comment content: ', comment.content);
         }
 
