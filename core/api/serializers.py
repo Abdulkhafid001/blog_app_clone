@@ -25,7 +25,7 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ['id', 'author_name', 'content', 'blog_post', 'pub_date']
 
     def get_author_name(self, obj):
-        return obj.user.name
+        return obj.user.username
 
 
 class LikeSerializer(serializers.ModelSerializer):

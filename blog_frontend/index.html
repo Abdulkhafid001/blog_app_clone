@@ -66,7 +66,7 @@
                 }
             }).then(response => response.json())
                 .then(data => {
-                    console.log(data);
+                    //console.log(data);
                     const blogPosts = document.getElementById('blogpostContainer');
                     data.forEach(post => {
                         const postElement = document.createElement('div');
@@ -94,26 +94,26 @@
 
                     </div>
                       <div class='comment-container' id="comment-${post.id}">
-                            <form action="">
-                                <input class="comment-input" id="commentInput" placeholder="add comment">
-                                <input type="submit" class="submit-comment-btn" value="Submit">
+                            <form action="" id="commentForm-${post.id}">
+                                <input class="comment-input" id="commentContent-${post.id}" placeholder="add comment">
+                                <input type="submit" class="submit-comment-btn update-page" data-postId=${post.id} data-action="comment" value="Submit">
                             </form>
                             <p class="comments-header">Comments</p>
                       </div>
                 </div>
                 `;
-            blogPosts.appendChild(postElement);
+                        blogPosts.appendChild(postElement);
 
-            const commentsContainer = document.getElementById(`comment-${post.id}`);
-            post.comments.forEach(comment => {
-                const commentElement = document.createElement('div');
-                commentElement.classList.add('comment');
-                commentElement.innerHTML = `
+                        const commentsContainer = document.getElementById(`comment-${post.id}`);
+                        post.comments.forEach(comment => {
+                            const commentElement = document.createElement('div');
+                            commentElement.classList.add('comment');
+                            commentElement.innerHTML = `
                  <div class="comment-header">
                     <img src="assets/blog-profile-picture.jpeg" alt="Profile Picture">
                     <div class="comment-header-info">
                         <span>Alex Filsinger</span>
-                        <span>· 6y</span>
+                        <span>updated· 6y</span>
                     </div>
                 </div>
                 <div class="comment-content">
@@ -125,10 +125,10 @@
                     <span>Reply</span>
                 </div>
                 `;
-                commentsContainer.appendChild(commentElement);
-            });
-            })
-        });
+                            commentsContainer.appendChild(commentElement);
+                        });
+                    })
+                });
         }
 
         document.getElementById('blogPosts').addEventListener('click', function (event) {
@@ -183,30 +183,34 @@
 
 
         function likePost(postId, action) {
-            console.log(action, 'post with ID:', postId);
+            //console.log(action, 'post with ID:', postId);
             const url = `http://127.0.0.1:8000/api/blogposts/${postId}/like`;
             sendDataToBackend(url, 'POST', {}, doNothing);
         }
 
+
         function comment(postId, action) {
-            const url = `http://127.0.0.1:8000/blogposts/${postId}/comment`;
-            document.getElementById("comment-form").addEventListener("submit", function (e) {
+
+            const url = `http://127.0.0.1:8000/api/blogposts/${postId}/comment`;
+
+            document.getElementById(`commentForm-${postId}`).addEventListener("submit", function (e) {
                 e.preventDefault();
             });
-            const commentContent = document.getElementById('comment-content').value;
+            const commentContent = document.getElementById(`commentContent-${postId}`).value;
             const comment = {
                 content: commentContent
             }
-            sendDataToBackend(url, comment, doNothing);
-            console.log('add comment post with ID: ', postId, 'comment content: ', comment.content);
+
+            sendDataToBackend(url, 'POST', comment, doNothing);
+
+            //console.log('add comment post with ID: ', postId, 'comment content: ', comment.content);
         }
+
         function share(postId, action) {
             console.log('share post with ID:', postId);
             const url = `http://127.0.0.1:8000/blogposts/${postId}/share`;
             sendDataToBackend(url, {}, doNothing);
         }
-
-
 
     </script>
     <script src="script.js"></script>

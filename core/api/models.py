@@ -30,14 +30,14 @@ class BlogPost(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(
-        Author, on_delete=models.CASCADE, related_name='comment_author', null=True)
+        User, on_delete=models.CASCADE, related_name='comment_author', null=True)
     blog_post = models.ForeignKey(
         BlogPost, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.content
+        return self.user.username
 
 
 class Like(models.Model):
