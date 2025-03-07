@@ -99,73 +99,7 @@
 
 
     <script>
-        const followBtn = document.getElementById('followBtn');
-        const testData = {
-            'userName': 'Abdul'
-        }
-        function doNothing() {
-            console.log('do nothing');
-        }
-
-        async function refreshAccessToken() {
-            const refreshToken = localStorage.getItem("refresh_token");
-
-            if (!refreshToken) {
-                console.error("No refresh token found. User needs to log in.");
-                return;
-            }
-
-            const response = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ refresh: refreshToken }),
-            });
-
-            if (!response.ok) {
-                console.error("Failed to refresh token. User needs to log in again.");
-                return;
-            }
-
-            const data = await response.json();
-            localStorage.setItem("access_token", data.access);
-            console.log("Access token refreshed!");
-        }
-
-        async function sendDataToBackend(url, data, action) {
-            let token = localStorage.getItem("access_token");
-
-            let response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: JSON.stringify(data),
-            });
-
-            // If token is expired, refresh it and retry
-            if (response.status === 401) {
-                console.log("Token expired, refreshing...");
-                await refreshAccessToken();
-                token = localStorage.getItem("access_token");
-
-                response = await fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(data),
-                });
-            }
-
-            return response.json();
-        }
-
-        const url = 'http://127.0.0.1:8000/blogposts/follow'
-        followBtn.addEventListener('click', function (e) {
-            sendDataToBackend(url, testData, doNothing);
-        });
+        
     </script>
 </body>
 

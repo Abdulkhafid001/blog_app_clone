@@ -76,7 +76,7 @@
                     <div class="post-header ">
                         <img src="assets/blog-profile-picture.jpeg" alt="Profile Picture">
                         <div class="post-header-info">
-                            <a href="/profile.html">${post.author_name}</a>
+                            <a href="profile.html">${post.author_name}</a>
                             <span>Software Developer · Updated 6y</span>
                         </div>
                     </div>
@@ -112,13 +112,12 @@
                  <div class="comment-header">
                     <img src="assets/blog-profile-picture.jpeg" alt="Profile Picture">
                     <div class="comment-header-info">
-                        <span>Alex Filsinger</span>
-                        <span>updated· 6y</span>
+                        <span>${comment.author_name}</span>
+                        <span>${comment.pub_date}</span>
                     </div>
                 </div>
                 <div class="comment-content">
-                    If that is the car in the picture, it’s a 325ci not an M3. No sense saying the car was something it
-                    isn’t.
+                    <p>${comment.content}</p>
                 </div>
                 <div class="comment-footer">
                     <span>185</span>
@@ -210,6 +209,10 @@
             console.log('share post with ID:', postId);
             const url = `http://127.0.0.1:8000/blogposts/${postId}/share`;
             sendDataToBackend(url, {}, doNothing);
+        }
+
+        function saveUserDataToLocalStorage(data) {
+
         }
 
     </script>
