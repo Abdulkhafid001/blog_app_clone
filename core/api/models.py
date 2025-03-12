@@ -1,4 +1,3 @@
-from datetime import timezone
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -21,9 +20,9 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     post_image_url = models.URLField(null=True, blank=True)
-    pub_date = models.DateTimeField(default=timezone.now())
+    pub_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
-        Author, on_delete=models.CASCADE, null=True, related_name='author', default=1)
+        Author, on_delete=models.CASCADE, null=True, related_name='author')
 
     def __str__(self):
         return self.title
@@ -35,7 +34,7 @@ class Comment(models.Model):
     blog_post = models.ForeignKey(
         BlogPost, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
-    pub_date = models.DateTimeField(default=timezone.now())
+    pub_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username
@@ -47,7 +46,7 @@ class Like(models.Model):
     blog_post = models.ForeignKey(
         BlogPost, on_delete=models.CASCADE, related_name='likes')
     likes = models.IntegerField(default=0)
-    date_and_time = models.DateTimeField(default=timezone.now())
+    date_and_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username
@@ -59,7 +58,7 @@ class Share(models.Model):
     blog_post = models.ForeignKey(
         BlogPost, on_delete=models.CASCADE, related_name='shares')
     shares = models.IntegerField(default=0)
-    date_and_time = models.DateTimeField(default=timezone.now())
+    date_and_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.name

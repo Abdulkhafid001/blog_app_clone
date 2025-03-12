@@ -112,7 +112,6 @@ class ShareBlogPostView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-
 @csrf_exempt
 def sign_up(request):
     if request.method == 'POST':
@@ -171,12 +170,10 @@ def get_user_info(request):
     })
 
 
-# get author detail page
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_author_posts(request, author_id):
     author = Author.objects.get(id=author_id)
     all_posts = BlogPost.objects.filter(author=author)
-    serializer = AuthorSerializer(author)
-    serializer2 = BlogPostSerializer(all_posts, many=True)
-    return Response(serializer2.data)
+    serializer = BlogPostSerializer(all_posts, many=True)
+    return Response(serializer.data)
