@@ -23,6 +23,11 @@ img {
     display: block;
 }
 
+.blogpost-title {
+    font-weight: 700;
+    margin-bottom: 1em;
+}
+
 .w-40 {
     width: 60%;
 }
@@ -97,6 +102,12 @@ main {
     font-size: 0.9rem;
     color: #777;
     margin-top: 5px;
+}
+
+.blogpost-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .post-btn {
