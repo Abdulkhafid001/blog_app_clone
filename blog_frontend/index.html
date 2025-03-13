@@ -76,7 +76,7 @@
                     <div class="post-header ">
                         <img src="assets/blog-profile-picture.jpeg" alt="Profile Picture">
                         <div class="post-header-info">
-                            <a href="#" class="update-page" data-userId="${post.author} data-action="viewprofile">${post.author_name}</a>
+                            <a href="#" class="update-page" data-postId="${post.id} data-action="viewprofile">${post.author_name}</a>
                             <span>Software Developer · Updated 6y</span>
                         </div>
                     </div>
@@ -131,10 +131,10 @@
         }
 
         document.getElementById('blogPosts').addEventListener('click', function (event) {
-            const button = event.target;
+            const eventItem = event.target;
 
             // Check if the clicked element is a button with the class 'update-page'
-            if (button.classList.contains('update-page')) {
+            if (eventItem.classList.contains('update-page')) {
                 const postId = button.getAttribute('data-postId'); // Get the post ID
                 const action = button.getAttribute('data-action'); // Get the action (like, comment, share)
                 // Handle the action based on the button clicked
