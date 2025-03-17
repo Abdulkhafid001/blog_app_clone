@@ -11,11 +11,12 @@
 
 <body>
     <script>
-        window.onload = "";
-        function getUserPosts(){
-            let userId = localStorage.getItem('userId');
-            
+        window.onload = getUserPosts;
+        function getUserPosts() {
+            let userId = localStorage.getItem('postId');
+            console.log('get user data for this post: ', userId);
         }
+        
     </script>
 </body>
 

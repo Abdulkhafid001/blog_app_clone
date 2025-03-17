@@ -98,6 +98,12 @@ main {
 
 /* .post-content {} */
 
+.profile-btn{
+    background: none;
+    color: black;
+    border: none;
+    text-align: center;
+}
 .post .meta {
     font-size: 0.9rem;
     color: #777;
