@@ -66,7 +66,7 @@
                 }
             }).then(response => response.json())
                 .then(data => {
-                    //console.log(data);
+                    console.log(data);
                     const blogPosts = document.getElementById('blogpostContainer');
                     data.forEach(post => {
                         const postElement = document.createElement('div');
@@ -76,7 +76,7 @@
                     <div class="post-header ">
                         <img src="assets/blog-profile-picture.jpeg" alt="Profile Picture">
                         <div class="post-header-info">
-                            <button class="update-page profile-btn" data-action="viewprofile" data-postId="${post.id}">${post.author_name}</button>
+                            <button class="update-page profile-btn" data-action="viewprofile" data-postId="${post.author}">${post.author_name}</button>
                             <span>Software Developer · Updated 6y</span>
                         </div>
                     </div>

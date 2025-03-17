@@ -10,13 +10,69 @@
 </head>
 
 <body>
+    <!-- blogposts -->
+    <section id="blogPosts">
+        <div class="post-container" id="blogpostContainer">
+        </div>
+    </section>
+
+
+
     <script>
         window.onload = getUserPosts;
         function getUserPosts() {
-            let userId = localStorage.getItem('postId');
-            console.log('get user data for this post: ', userId);
+            let postId = localStorage.getItem('postId');
+            //console.log('get user data for this post: ', userId);
+            const url = `http://127.0.0.1:8000/api/author/${postId}/blogposts`;
+            let token = localStorage.getItem("access_token");
+            fetch(url, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                }
+            }).then(response => response.json())
+                .then(data => {
+                    //console.log(data);
+                    const blogPosts = document.getElementById('blogpostContainer');
+                    data.forEach(post => {
+                        const postElement = document.createElement('div');
+                        postElement.classList.add('mb-sm');
+                        postElement.innerHTML = `
+                         <div class="post">
+                    <div class="post-header ">
+                        <img src="assets/blog-profile-picture.jpeg" alt="Profile Picture">
+                        <div class="post-header-info">
+                            <button class="update-page profile-btn" data-action="viewprofile" data-postId="${post.author}">${post.author_name}</button>
+                            <span>Software Developer · Updated 6y</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h3 class="blogpost-title">${post.title}</h3>
+                        <img class="blogpost-image" src="${post.post_image_url}" alt="">
+                        <p>${post.content}</p>
+                    </div>
+                    <div class="post-footer">
+                        <div>
+                            <button id="likeBtn" class="update-page" data-postId=${post.id} data-action="like"><i class="bi bi-arrow-up-square-fill"></i> Upvote ·
+                                ${post.total_likes}</button>
+                            <span>${post.total_comments} Comments</span>
+                            <span>${post.total_shares} Shares</span>
+                        </div>
+
+                    </div>
+                      <div class='comment-container' id="comment-${post.id}">
+                            <form action="" id="commentForm-${post.id}">
+                                <input class="comment-input" id="commentContent-${post.id}" placeholder="add comment">
+                                <input type="submit" class="submit-comment-btn update-page" data-postId=${post.id} data-action="comment" value="Submit">
+                            </form>
+                            <p class="comments-header">Comments</p>
+                      </div>
+                </div>
+                        `;
+                        blogPosts.appendChild(postElement);
+                    })
+                });
         }
-        
     </script>
 </body>
 
