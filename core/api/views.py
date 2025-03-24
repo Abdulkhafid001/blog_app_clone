@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Count
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
@@ -174,6 +175,7 @@ def get_user_info(request):
 @permission_classes([IsAuthenticated])
 def get_author_posts(request, author_id):
     author = Author.objects.get(id=author_id)
-    all_posts = BlogPost.objects.filter(author=author)
+    all_posts = BlogPost.objects.filter(author=author).annotate(
+        like_count=Count('likes')).order_by('-like_count', '-pub_date')
     serializer = BlogPostSerializer(all_posts, many=True)
     return Response(serializer.data)
